@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Register from '../views/Register.vue'
 import Reserva from '../views/Reserva.vue'
 import Login from '../views/Login.vue'
-
+import GetReservasByUserfrom from '../components/getReservationByUser'
+import CreateReservation from '../components/createReservation.vue'
 
 const routes = [
   {
@@ -16,9 +17,19 @@ const routes = [
     component: Register
   },
   {
-    path: '/reserva',
-    name: 'reserva',
-    component: Reserva
+    path: '/reservation',
+    name: 'reservation',
+    component: Reserva,
+    children: [
+      {
+        path: 'create',
+        component: CreateReservation
+      },
+      {
+        path: 'your-reservations',
+        component: GetReservasByUserfrom
+      }
+    ]
   }
 ]
 
