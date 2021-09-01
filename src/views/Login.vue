@@ -20,6 +20,10 @@
     <div class="btn">
       <button class="btn__login">LOGIN</button>
     </div>
+    <br>
+    <div class="register-content">
+      <router-link class="register-content__text" to="/Register">¿No tienes una cuenta? ¡Registrate aquí!</router-link>
+    </div>
   </div>  
 </div>
 </template>
@@ -140,6 +144,15 @@
 .btn__login:hover {
   transition: all .3s ease-in-out;
   background-color: white;
+  color: black;
+}
+
+.container {
+  padding-bottom: 1.5rem;
+}
+
+.register-content__text {
+  text-decoration: none;
   color: black;
 }
 </style>
