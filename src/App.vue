@@ -1,4 +1,8 @@
 <template>
+  <div id="nav">
+    <router-link to="/login">Login</router-link>
+    <router-link to="/Register">Register</router-link> 
+  </div>
   <router-view/>
 </template>
 
@@ -20,6 +24,7 @@
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+  margin-right: 1rem;
 }
 
 #nav a.router-link-exact-active {
