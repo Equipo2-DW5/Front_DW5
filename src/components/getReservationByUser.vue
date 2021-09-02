@@ -63,7 +63,7 @@ export default {
           this.$data.data = result.data.reservationByUserId.data
         })
         .catch((error) => {
-          alert("error al consultar", error);
+          alert("No se encontraron reservas", error);
         });
     },
   },

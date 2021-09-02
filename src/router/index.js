@@ -7,7 +7,7 @@ import CreateReservation from "../components/createReservation.vue";
 import Settings from "../components/settings.vue";
 function guardMyroute(to, from, next) {
   var isAuthenticated = false;
-  if (localStorage.getItem("LoggedUser")) isAuthenticated = true;
+  if (localStorage.getItem("LoggedUser")=== true) isAuthenticated = true;
   else isAuthenticated = false;
   if (isAuthenticated) {
     next(); // allow to enter route

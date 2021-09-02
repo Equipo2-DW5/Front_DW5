@@ -37,7 +37,7 @@
                 Configuración
               </ui-nav-item>
               <ui-nav-item @click="logout">
-                <ui-icon>calendar_today</ui-icon>
+                <ui-icon>logout</ui-icon>
                 Cerrar Sesión
               </ui-nav-item>
             </ui-nav>
@@ -60,6 +60,7 @@ export default {
     },
     logout: function() {
       this.$store.commit("setUser", {});
+      localStorage.setItem("LoggedUser",false)
       this.navigate("/");
     },
   },
