@@ -1,123 +1,138 @@
 <template>
   <div id="register">
-  <div class="container">
-    <div class="title">
-      <h1 class="title__main">REGISTRO DE USUARIO</h1>
+    <div class="register-container">
+      <div class="title">
+        <h1 class="title__main">REGISTRO DE USUARIO</h1>
+      </div>
+      <div class="info">
+        <div class="info__content">
+  
+          <div>
+            <ui-textfield v-model="user_in.first_name" outlined required>
+              Nombre
+            </ui-textfield>
+          </div>
+              
+        </div>
+        <div class="info__content">
+          <div>
+            <ui-textfield v-model="user_in.last_name" outlined required>
+              Apellido
+            </ui-textfield>
+          </div>
+        </div>
+        <div class="info__content">
+          
+          <div>
+            <ui-textfield v-model="user_in.email" outlined required>
+              Correo Insitucional
+            </ui-textfield>
+          </div>
+        </div>
+        <div class="info__content">
+        
+          <div>
+           <ui-textfield outlined required>
+              Confirmación de correo
+            </ui-textfield>
+          </div>
+        </div>
+        <div class="info__content">
+          
+          <div>
+            <ui-textfield input-type="password" v-model="user_in.password" outlined required>
+              Contraseña
+            </ui-textfield>
+            
+          </div>
+        </div>
+        <div class="info__content">
+          
+          <div>
+            <ui-select
+                required
+                v-model="user_in.role"
+                :options="options"
+                @selected="onSelected($event)"
+                outlined
+              >
+                Laboratorio
+              </ui-select>
+          </div>
+        </div>
+      </div>
+      <div class="btn"><!-- 
+        <button class="btn__login back" @click="registro">Inicia Sesión</button> -->
+        <button class="btn__login" @click="registro">Registrate</button>
+      </div>
     </div>
-    <div class ="info">
-      <div class="info__content">
-        <div class="info__item">
-          <p class ="info__name">NOMBRES</p>
-        </div>
-        <div>
-          <input class="info__info" type="text" v-model="user_in.first_name">
-        </div>
-      </div>
-      <div class="info__content">
-        <div class="info__item">
-          <p class ="info__last-name">APELLIDOS</p>
-        </div>
-        <div>
-          <input class="info__info" type="text" v-model="user_in.last_name">
-        </div>
-      </div>
-      <div class="info__content">
-        <div class="info__item">
-          <p class ="info__id">IDENTIFICACION</p>
-        </div>
-        <div>
-          <input class="info__info" type="text">
-        </div> 
-      </div>
-      <div class="info__content">
-        <div class="info__item"> 
-          <p class ="info__email">CORREO INSTITUCIONAL</p>
-        </div>
-        <div>
-          <input class="info__info" type="text" v-model="user_in.email">
-        </div>
-      </div>
-      <div class="info__content">
-        <div class="info__item">
-          <p class ="info__confirm">CONFIRMACION DE CORREO</p>
-        </div>
-        <div>
-          <input class="info__info" type="text">
-        </div> 
-      </div>
-      <div class="info__content">
-        <div class="info__item">
-          <p class ="info__confirm">CONTRASEÑA</p>
-        </div>
-        <div>
-          <input class="info__info" type="password" v-model="user_in.password">
-        </div> 
-      </div>
-      <div class="info__content">
-        <div class="info__item">
-          <p class ="info__confirm">ROL</p>
-        </div>
-        <div>
-          <select class="select" name="" id="" v-model="user_in.role">
-            <option value=""></option>
-            <option value="Laboratorista">Laboratorista</option>
-            <option value="Estudiante">Estudiante</option>
-            <option value="Coordinador">Coordinador</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="btn">
-      <button class="btn__login" @click="registro">Register</button>
-    </div>
-  </div>
-    
   </div>
 </template>
 
 <script>
-  import gql from "graphql-tag";
-  export default {
-  name: 'Register',
+import gql from "graphql-tag";
+export default {
+  name: "Register",
   data() {
     return {
-      user_in:
-      {
-        email:"",
+      options: [
+        {
+          label: "Estudiante",
+          value: "Estudiante",
+        }
+      ],
+      user_in: {
+        email: "",
         password: "",
         first_name: "",
         last_name: "",
-        role: ""
-      }
-    }
+        role: "",
+      },
+    };
   },
-  methods:{
-    registro: async function(){
-            await this.$apollo.mutate({
-                mutation: gql`
-                   mutation ($createUserInput: UserInput!) {
-                    createUser(input: $createUserInput) {
-                    output }     
-                  }`, 
-                variables: {
-                    createUserInput: this.user_in
-                }
-  }).then((result) => {
-    console.log(result)
-    alert ("Usuario Creado")
-                
-            }).catch(() => {
-
-                alert("Usuario No Creado")
-            });
-  }
-  }
-}
+  methods: {
+    onSelected(selected) {
+      this.user_in.role = selected.value;
+    },
+    registro: async function() {
+      await this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($createUserInput: UserInput!) {
+              createUser(input: $createUserInput) {
+                output
+              }
+            }
+          `,
+          variables: {
+            createUserInput: this.user_in,
+          },
+        })
+        .then((result) => {
+          console.log(result);
+          alert("Usuario Creado");
+          this.$router.push('/')
+        })
+        .catch(() => {
+          alert("Usuario No Creado");
+        });
+    },
+  },
+};
 </script>
 
 <style>
-.container {
+.register-container{
+  display: flex;
+  flex-direction: column;
   background: gray;
+  height: 100vh;
+  padding-bottom: 1.5rem;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+.container {
 }
 .info {
   display: flex;
@@ -127,6 +142,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 10px 0px;
 }
 .info__item {
   display: flex;
@@ -136,5 +152,7 @@
 .select {
   width: 9.5rem;
 }
-  
+.back{
+  margin-right: 30px;
+}
 </style>

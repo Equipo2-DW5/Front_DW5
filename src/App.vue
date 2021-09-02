@@ -4,7 +4,6 @@
     <router-link to="/Register">Register</router-link>  -->
   </div>
   <router-view />
-  <ui-button type="submit" @click="auth" raised>Crear</ui-button>
 </template>
 
 <script>
