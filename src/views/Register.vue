@@ -77,12 +77,13 @@
 
 <script>
   import gql from "graphql-tag";
+
   export default {
   name: 'Register',
-  data() {
+
+  data: function () {
     return {
-      user_in:
-      {
+      user_in: {
         email:"",
         password: "",
         first_name: "",
@@ -91,7 +92,8 @@
       }
     }
   },
-  methods:{
+
+  methods: {
     registro: async function(){
             await this.$apollo.mutate({
                 mutation: gql`
@@ -102,16 +104,14 @@
                 variables: {
                     createUserInput: this.user_in
                 }
-  }).then((result) => {
-    alert ("Usuario Creado")
-                
-
-            }).catch((error) => {
-                alert("Usuario No Creado")
-            });
+              }).then((result) => {
+                alert("Usuario Creado")
+              }).catch((error) => {
+                 alert("Usuario No Creado")
+              });
+              }
+            }
   }
-  }
-}
 </script>
 
 <style>

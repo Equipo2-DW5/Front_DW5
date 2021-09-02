@@ -60,9 +60,10 @@
                 }).then((result) => {
                 
                 let data = result.data.authenticate
-                data.user_id = jwt_decode(data.access).user_id.toString().padStart(3, "0")
+                //console.log(jwt_decode(data.access).email.toString())
+                data.email = jwt_decode(data.access).email.toString()
 
-                this.$emit('log-in', data, this.user_in.username)
+                this.$emit('log-in', data, this.user_in.email)
                 }).catch((error) => {
                 alert("El usuario y/o contraseña son incorrectos")
             });
