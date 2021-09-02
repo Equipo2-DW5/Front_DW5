@@ -5,9 +5,16 @@ export default createStore({
   state: {
     isAuthenticated: false,
     token:'',
-    user: {}
+    user: {},
+    reservationsByUser: []
   },
   mutations: {
+    setToken (state, token) {
+      state.token = token
+    },
+    setUser (state, user) {
+      state.user = user
+    }
   },
   actions: {
   },

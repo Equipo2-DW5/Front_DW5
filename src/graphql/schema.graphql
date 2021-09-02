@@ -1,0 +1,126 @@
+type ReservaResponse {
+  timestamp: String
+  id: String
+  message: String
+  data: [Reserva]
+}
+
+type Reserva {
+  idReserva: String!
+  descripcion: String
+  fechaSolicitud: String
+  fechaFin: String
+  duracion: String
+  idUsuario: String
+  idLaboratorio: String
+  estado: Boolean
+}
+
+input ReservaCreateInput {
+  userId: String
+  userRole: String
+  userEmail: String
+  reserva: ReservaInput
+}
+
+input ReservaInput {
+  idReserva: String
+  descripcion: String
+  fechaSolicitud: String
+  fechaFin: String
+  duracion: String
+  idUsuario: String
+  idLaboratorio: String
+  estado: Boolean
+}
+
+input ReservaUpdateInput {
+  userId: String
+  userRole: String
+  userEmail: String
+  reserva: ReservaInput
+}
+
+input ReservaByAnyId {
+  userId: String
+  userRole: String
+  userEmail: String
+  id: String
+}
+
+type Query {
+  getReservas: ReservaResponse
+  reservationById(reservaByAnyId: ReservaByAnyId!): ReservaResponse
+  reservationByUserId(reservaByAnyId: ReservaByAnyId!): ReservaResponse
+  userByEmail(email: String!): User
+  RetrieveLabById(lab_id: Int!): Laboratorio
+  RetrieveLabList: [Laboratorio]
+}
+
+type Mutation {
+  createReservation(reservationCreateRequest: ReservaCreateInput!): ReservaResponse
+  updateReservation(reservationUpdateRequest: ReservaUpdateInput!): ReservaResponse
+  authenticate(credentials: CredentialsInput!): Tokens!
+  refreshToken(refresh: String!): Access!
+  createUser(input: UserInput!): Output
+  updateUser(input: UpdateUserInput!): Output
+  deleteUser(email: String!): Output
+  LabCreate(lab_input: LaboratorioInput!): Laboratorio
+}
+
+type Tokens {
+  refresh: String!
+  access: String!
+}
+
+type Access {
+  access: String!
+}
+
+input CredentialsInput {
+  email: String!
+  password: String!
+}
+
+type User {
+  id: String!
+  first_name: String!
+  last_name: String!
+  email: String!
+  role: String!
+  state: String
+}
+
+type Output {
+  output: String!
+}
+
+input UserInput {
+  email: String!
+  first_name: String!
+  last_name: String!
+  password: String!
+  role: String!
+}
+
+input UpdateUserInput {
+  email: String!
+  password: String
+  role: String!
+  state: String
+}
+
+type Laboratorio {
+  lab_id: Int
+  categoria: String
+  descripcion: String
+  estado: String
+  aforo: Int
+}
+
+input LaboratorioInput {
+  categoria: String
+  descripcion: String
+  estado: String
+  aforo: Int
+}

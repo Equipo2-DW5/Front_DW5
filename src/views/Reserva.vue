@@ -7,7 +7,7 @@
     content-selector=".demo-content"
     :nav-icon="false"
   >
-    Title
+    Bienvenido, {{$store.state.user.first_name}} - [{{$store.state.user.role}}]
   </ui-top-app-bar>
   <!-- Content -->
   <div class="demo-content">
@@ -15,19 +15,22 @@
     <ui-drawer viewport-height>
       <ui-drawer-content>
         <ui-nav>
-          <ui-nav-item active>
-            <router-link to="/reservation"><ui-icon>home</ui-icon></router-link>
+          <ui-nav-item @click="navigate('/reservation')" active>
+            <ui-icon>home</ui-icon>
             Home
           </ui-nav-item>
-          <ui-nav-item >
-            <router-link to="/reservation/create"><ui-icon>edit_calendar</ui-icon></router-link>
+          <ui-nav-item @click="navigate('/reservation/create')">
+            <ui-icon>edit_calendar</ui-icon>
             Crear reserva
           </ui-nav-item>
-          <ui-nav-item  >
-            <router-link to="/reservation/your-reservations"><ui-icon>calendar_today</ui-icon></router-link>
+          <ui-nav-item  @click="navigate('/reservation/your-reservations')">
+            <ui-icon>calendar_today</ui-icon>
             Consultar tus reservas
           </ui-nav-item>
-          
+          <ui-nav-item v-if="$store.state.user.role !='Estudiante'" @click="navigate('/reservation/settings')">
+            <ui-icon>settings</ui-icon>
+            Configuración
+          </ui-nav-item>
         </ui-nav>
       </ui-drawer-content>
     </ui-drawer>
@@ -39,6 +42,22 @@
 </div>
   </div>
 </template>
+<script>
+export default {
+  el: '#reserva',
+  methods: {
+    navigate: function(route) {
+      this.$router.push(route)
+    }
+  },
+  data() {
+    return {
+      usuario: this.$store.state.user
+    };
+  }
+}
+</script>
+
 
 <style>
 .demo-app-content {

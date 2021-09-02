@@ -4,6 +4,7 @@ import Reserva from '../views/Reserva.vue'
 import Login from '../views/Login.vue'
 import GetReservasByUserfrom from '../components/getReservationByUser'
 import CreateReservation from '../components/createReservation.vue'
+import Settings from '../components/settings.vue'
 
 const routes = [
   {
@@ -28,6 +29,10 @@ const routes = [
       {
         path: 'your-reservations',
         component: GetReservasByUserfrom
+      },
+      {
+        path: 'settings',
+        component: Settings
       }
     ]
   }
