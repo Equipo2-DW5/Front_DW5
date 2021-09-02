@@ -135,9 +135,10 @@ export default {
         })
         .then((result) => {
           this.reservation = result.data.reservationById.data[0];
+          this.updateReservation();
         })
-        .catch((error) => {
-          alert("error al consultar", error);
+        .catch(() => {
+          alert("Ha ocurrido un error aprobando la solicitud");
         });
     },
     updateReservation: async function() {
@@ -145,10 +146,10 @@ export default {
         .mutate({
           mutation: gql`
             mutation Mutation(
-              $createReservationReservationCreateRequest: ReservaCreateInput!
+              $updateReservationReservationUpdateRequest: ReservaUpdateInput!
             ) {
-              createReservation(
-                reservationCreateRequest: $createReservationReservationCreateRequest
+              updateReservation(
+                reservationUpdateRequest: $updateReservationReservationUpdateRequest
               ) {
                 timestamp
                 id
@@ -167,26 +168,29 @@ export default {
             }
           `,
           variables: {
-            createReservationReservationCreateRequest: {
+            updateReservationReservationUpdateRequest: {
               userId: `${this.$store.state.user.id}`,
               userRole: this.$store.state.user.role,
               userEmail: this.$store.state.user.email,
               reserva: {
-                descripcion: this.reservation.description,
-                fechaSolicitud: "2021-08-18T12:57:37",
-                fechaFin: "2021-08-18T20:57:37",
-                duracion: this.reservation.duration,
+                idReserva: this.reservation.idReserva,
+                descripcion: this.reservation.descripcion,
+                fechaSolicitud: this.reservation.fechaSolicitud,
+                fechaFin: this.reservation.fechaFin,
+                duracion: this.reservation.duracion,
                 idUsuario: `${this.$store.state.user.id}`,
-                idLaboratorio: "lab02",
+                idLaboratorio: this.reservation.idLaboratorio,
+                estado: true,
               },
             },
           },
         })
         .then((result) => {
           console.log(result);
+          alert("Se ha aprobado la solicitud exitosamente")
         })
-        .catch((error) => {
-          alert("El usuario y/o contraseÃ±a son incorrectos", error);
+        .catch(() => {
+          alert("Ha ocurrido un error aprobando la solicitud");
         });
     },
     updateUser: async function() {
@@ -217,12 +221,11 @@ export default {
 };
 </script>
 
-
 <style>
-.reservation-management{
+.reservation-management {
   padding: 30px 0px;
 }
-.user-management{
+.user-management {
   padding: 30px 0px;
 }
 </style>

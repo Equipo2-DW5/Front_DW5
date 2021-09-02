@@ -167,9 +167,10 @@ export default {
         })
         .then((result) => {
           console.log(result);
+          alert("Se ha creado la solicitud exitosamente")
         })
-        .catch((error) => {
-          alert("El usuario y/o contraseÃ±a son incorrectos", error);
+        .catch(() => {
+          alert("Ha ocurrido un error creando la solicitud");
         });
     },
     getLaboratories: async function() {
@@ -195,7 +196,7 @@ export default {
 
         })
         .catch((error) => {
-          alert("error al consultar", error);
+          alert("Ha ocurrido un error al consultar los laboratorios", error);
         });
     },
     onSelected(selected) {
