@@ -103,10 +103,11 @@
                     createUserInput: this.user_in
                 }
   }).then((result) => {
+    console.log(result)
     alert ("Usuario Creado")
                 
+            }).catch(() => {
 
-            }).catch((error) => {
                 alert("Usuario No Creado")
             });
   }
@@ -115,32 +116,25 @@
 </script>
 
 <style>
-
 .container {
   background: gray;
 }
-
 .info {
   display: flex;
   flex-direction: column;
 }
-
 .info__content {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .info__item {
   display: flex;
   align-items: flex-start;
   width: 17rem;
 }
-
 .select {
   width: 9.5rem;
 }
-
   
 </style>
-

@@ -31,10 +31,8 @@
 <script>
   import gql from 'graphql-tag'
   import jwt_decode from "jwt-decode"
-
   export default {
     name: "Login",
-
     data: function(){
         return {
             user_in: {
@@ -43,7 +41,6 @@
             }
         }
     },
-
     methods: {
         login: async function(){
             await this.$apollo.mutate({
@@ -61,114 +58,126 @@
                 
                 let data = result.data.authenticate
                 data.user_id = jwt_decode(data.access).user_id.toString().padStart(3, "0")
-
                 this.$emit('log-in', data, this.user_in.username)
-                }).catch((error) => {
+                this.$store.commit("setToken", data.access);
+                this.getUserInfo()
+                }).catch(() => {
                 alert("El usuario y/o contraseña son incorrectos")
             });
-        }
+        },
+        getUserInfo: async function() {
+          let email = jwt_decode(this.$store.state.token).email.toString()
+          console.log(email)
+      await this.$apollo
+        .query({
+          query: gql`
+            query Query($userByEmailEmail: String!) {
+              userByEmail(email: $userByEmailEmail) {
+                id
+                first_name
+                last_name
+                email
+                role
+                state
+              }
+            }
+          `,
+          variables: {
+            userByEmailEmail: email
+          },
+        })
+        .then((result) => {
+          let user = result.data.userByEmail;
+          console.log(user)
+          this.$store.commit("setUser", user);
+        })
+        .catch((error) => {
+          alert("El usuario y/o contraseÃ±a son incorrectos", error);
+        });
+    },
     }
 }
 </script>
 
 <style>
-
 .login {
   background-color: gray;
 }
-
 .logo {
   display: flex;
   flex-direction: column;
   width: 15%;
   margin: auto;
 }
-
 .logo__img {
   display: block;
   margin-top: 1rem;
 }
-
 .logo__title {
   font-size: 3rem;
   text-align: center;
 }
-
 .request {
   display: flex;
   flex-direction: column;
   align-content: center;
 }
-
 .user {
   display: flex;
   margin-top: 3rem;
   justify-content: center;
   align-items: center;
 }
-
 .user__logo {
   display: block;
 }
-
 .user__text {
   margin-left: 0.5rem;
   font-size: 25px;
 }
-
 .user__info {
   margin-left: 0.5rem;
   width: 20%;
 }
-
 .e-mail {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .e-mail__logo {
   display: block;
   width: 2%;
   margin-right: 31px;
 }
-
 .e-mail__text {
   margin-left: -1.5rem;
   font-size: 25px;
 }
-
 .e-mail__info {
   margin-left: 2.5rem;
   width: 20%;
 }
-
 .password {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .password__logo {
   display: block;
 }
-
 .password__text {
   margin-left: 0.5rem;
   font-size: 25px;
 }
-
 .password__info {
   margin-left: 0.5rem;
   width: 20%;
 }
-
 .btn {
   display: flex;
   justify-content: center;
   margin-top: 2rem;
 }
-
 .btn__login {
   border: 1px solid darkgray;
   border-radius: 5px;
@@ -180,20 +189,16 @@
   text-decoration: none;
   cursor: pointer;
 }
-
 .btn__login:hover {
   transition: all .3s ease-in-out;
   background-color: white;
   color: black;
 }
-
 .container {
   padding-bottom: 1.5rem;
 }
-
 .register-content__text {
   text-decoration: none;
   color: black;
 }
 </style>
-
