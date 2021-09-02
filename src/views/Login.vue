@@ -9,16 +9,16 @@
       <div class="e-mail">
         <img class="e-mail__logo" src="../assets/email.png" alt="mail">
         <p class="e-mail__text">E-mail</p>
-        <input class="e-mail__info" type="text">
+        <input class="e-mail__info" type="text" v-model="user_in.email">
       </div>
       <div class="password"> 
         <img class="password__logo" src="../assets/lock.png" alt="password">
         <p class="password__text">Password</p>
-        <input class="password__info" type="password">
+        <input class="password__info" type="password" v-model="user_in.password">
       </div>
     </div>
     <div class="btn">
-      <button class="btn__login">LOGIN</button>
+      <button class="btn__login" @click="login">LOGIN</button>
     </div>
     <br>
     <div class="register-content">
@@ -29,11 +29,51 @@
 </template>
 
 <script>
+  import gql from 'graphql-tag'
+  import jwt_decode from "jwt-decode"
 
+  export default {
+    name: "Login",
+
+    data: function(){
+        return {
+            user_in: {
+                email:"",
+                password:""
+            }
+        }
+    },
+
+    methods: {
+        login: async function(){
+            await this.$apollo.mutate({
+                mutation: gql`
+                    mutation ($authenticateCredentials: CredentialsInput!) {
+                        authenticate(credentials: $authenticateCredentials) {
+                          refresh
+                            access
+                        }
+                    }`, 
+                variables: {
+                    authenticateCredentials: this.user_in
+                }
+                }).then((result) => {
+                
+                let data = result.data.authenticate
+                data.user_id = jwt_decode(data.access).user_id.toString().padStart(3, "0")
+
+                this.$emit('log-in', data, this.user_in.username)
+                }).catch((error) => {
+                alert("El usuario y/o contraseña son incorrectos")
+            });
+        }
+    }
+}
 </script>
 
 <style>
-  .login {
+
+.login {
   background-color: gray;
 }
 

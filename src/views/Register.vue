@@ -10,7 +10,7 @@
           <p class ="info__name">NOMBRES</p>
         </div>
         <div>
-          <input class="info__info" type="text" v-model="nombres">
+          <input class="info__info" type="text" v-model="user_in.first_name">
         </div>
       </div>
       <div class="info__content">
@@ -18,7 +18,7 @@
           <p class ="info__last-name">APELLIDOS</p>
         </div>
         <div>
-          <input class="info__info" type="text" v-model="apellidos">
+          <input class="info__info" type="text" v-model="user_in.last_name">
         </div>
       </div>
       <div class="info__content">
@@ -26,7 +26,7 @@
           <p class ="info__id">IDENTIFICACION</p>
         </div>
         <div>
-          <input class="info__info" type="text" v-model="identificacion">
+          <input class="info__info" type="text">
         </div> 
       </div>
       <div class="info__content">
@@ -34,7 +34,7 @@
           <p class ="info__email">CORREO INSTITUCIONAL</p>
         </div>
         <div>
-          <input class="info__info" type="text" v-model="email">
+          <input class="info__info" type="text" v-model="user_in.email">
         </div>
       </div>
       <div class="info__content">
@@ -42,7 +42,7 @@
           <p class ="info__confirm">CONFIRMACION DE CORREO</p>
         </div>
         <div>
-          <input class="info__info" type="text" v-model="confirmacionDeCorreo">
+          <input class="info__info" type="text">
         </div> 
       </div>
       <div class="info__content">
@@ -50,18 +50,19 @@
           <p class ="info__confirm">CONTRASEÑA</p>
         </div>
         <div>
-          <input class="info__info" type="password" v-model="password">
+          <input class="info__info" type="password" v-model="user_in.password">
         </div> 
       </div>
       <div class="info__content">
         <div class="info__item">
-          <p class ="info__confirm">SEXO</p>
+          <p class ="info__confirm">ROL</p>
         </div>
         <div>
-          <select class="select" name="" id="" v-model="sexo">
+          <select class="select" name="" id="" v-model="user_in.role">
             <option value=""></option>
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
+            <option value="Laboratorista">Laboratorista</option>
+            <option value="Estudiante">Estudiante</option>
+            <option value="Coordinador">Coordinador</option>
           </select>
         </div>
       </div>
@@ -75,37 +76,40 @@
 </template>
 
 <script>
+  import gql from "graphql-tag";
   export default {
-  el: '#register',
+  name: 'Register',
   data() {
     return {
-      email: null,
-      password: null,
-      nombres: null,
-      apellidos: null,
-      identificacion: null,
-      correoInstitucional: null,
-      confirmacionDeCorreo: null,
-      contrasena: null,
-      sexo:null
-    };
+      user_in:
+      {
+        email:"",
+        password: "",
+        first_name: "",
+        last_name: "",
+        role: ""
+      }
+    }
   },
   methods:{
-    registro (){
-      let information = {
-        email: this.email, 
-        password: this.password,
-        first_name: this.nombres,
-        last_name: this.apellidos,
-        role: "estudiante"
-      }
-      console.log (information)
-      fetch("https://users-ms-dw5t2.herokuapp.com/create", {
-        method:"POST", body: information
-      }).then(response => response.json())
-  .then(data => console.log(data));
-      
-    }
+    registro: async function(){
+            await this.$apollo.mutate({
+                mutation: gql`
+                   mutation ($createUserInput: UserInput!) {
+                    createUser(input: $createUserInput) {
+                    output }     
+                  }`, 
+                variables: {
+                    createUserInput: this.user_in
+                }
+  }).then((result) => {
+    alert ("Usuario Creado")
+                
+
+            }).catch((error) => {
+                alert("Usuario No Creado")
+            });
+  }
   }
 }
 </script>
