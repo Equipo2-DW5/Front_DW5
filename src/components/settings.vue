@@ -178,7 +178,7 @@ export default {
                 fechaSolicitud: this.reservation.fechaSolicitud,
                 fechaFin: this.reservation.fechaFin,
                 duracion: this.reservation.duracion,
-                idUsuario: `${this.$store.state.user.id}`,
+                idUsuario: `${this.reservation.idUsuario}`,
                 idLaboratorio: this.reservation.idLaboratorio,
                 estado: true,
               },
