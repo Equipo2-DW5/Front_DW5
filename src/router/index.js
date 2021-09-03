@@ -25,12 +25,12 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
+    
   },
   {
     path: "/reservation",
     name: "reservation",
     component: Reserva,
-    beforeEnter: guardMyroute,
     children: [
       {
         path: "create",

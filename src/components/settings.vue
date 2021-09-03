@@ -211,10 +211,11 @@ export default {
           },
         })
         .then((result) => {
+          alert("Se ha asignado el rol exitosamente")
           console.log(result);
         })
         .catch((error) => {
-          alert("El usuario y/o contraseÃ±a son incorrectos", error);
+          alert("Ha ocurrido un error asigando el rol", error);
         });
     },
   },

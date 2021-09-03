@@ -1,5 +1,8 @@
 // vue.config.js
 module.exports = {
+  devServer: {
+    disableHostCheck: true
+  },
   runtimeCompiler: true,
   // NOTE: set alias via `configureWebpack` or `chainWebpack`
   configureWebpack: {
